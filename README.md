@@ -1,3 +1,5 @@
+[![hex](vignettes/hex.png)]
+
 # cropcircle
 
 [![Build Status](https://travis-ci.org/trichelab/cropcircle.png?branch=master)](https://travis-ci.org/trichelab/cropcircle)  [![codecov](https://codecov.io/gh/trichelab/cropcircle/branch/master/graph/badge.svg)](https://codecov.io/gh/trichelab/cropcircle)
