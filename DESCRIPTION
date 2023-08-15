@@ -2,8 +2,8 @@ Package: cropcircle
 Type: Package
 Title: Like singlet, but for metabolomics
 Description: Set-wise annotation for factor models of untarged metabolomic data
-Version: 0.1.1
-Date: 2023-04-20
+Version: 0.1.20230811
+Date: 2023-08-11
 Authors@R: person("Tim", "Triche, Jr.", role=c("aut", "cre"), email="trichelab@gmail.com")
 Author: Tim Triche, Jr. [aut, cre]
 Maintainer: Tim Triche, Jr. <trichelab@gmail.com>
@@ -12,10 +12,12 @@ BugReports: https://github.com/trichelab/cropcircle/issues
 License: MIT + file LICENSE
 Depends:
     R (>= 3.0.0),
-    RcppML
+    RcppML,
+    singlet
 Imports:
     ggplot2, 
     ggforce,
+    Matrix,
     plotly
 Suggests:
     covr,
