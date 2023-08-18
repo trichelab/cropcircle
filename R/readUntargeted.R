@@ -49,7 +49,9 @@
 readUntargeted <- function(x, coldat=TRUE, out=c("SCE","raw"), verbose=FALSE) {
   
   out <- match.arg(out)
+  if (verbose) message("Reading ", x, "...", appendLF=FALSE)
   res <- read.csv(x, head=FALSE)
+  if (verbose) message("...done.")
   colnames(res) <- res[1, ]
   res <- res[-1, ] 
   rownames(res) <- make.unique(res[, 1])
@@ -62,29 +64,76 @@ readUntargeted <- function(x, coldat=TRUE, out=c("SCE","raw"), verbose=FALSE) {
     rowDatCols <- c(rowDatCols, addCols)
   }
   if (length(rowDatCols) > 0) {
-    if (verbose) message("Separating rowData from assay data...", append=FALSE)
     rowdat <- res[, rowDatCols]
+    nrdc <- length(rowDatCols)
+    if (verbose) message("Extracting ", nrdc, " rowData cols...",appendLF=FALSE)
     assayDatCols <- setdiff(colnames(res), rowDatCols)
     res <- data.matrix(res[, assayDatCols])
     if (verbose) message("...done.")
   } 
   if (coldat) {
-    if (verbose) message("Extracting colData from column names...",append=FALSE)
+    if (verbose) message("Extracting colData...", appendLF=FALSE)
     cdat <- parseColnames(colnames(res)) 
     if (verbose) message("...done.")
   }
 
   if (out == "SCE") {
-    if (verbose) message("Constructing SingleCellExperiment...", append=FALSE)
-    sce <- SingleCellExperiment(assays=list(MzR=as(res, "dgCMatrix")))
-    if (coldat) colData(sce) <- DataFrame(cdat)
+    
+    if (verbose) message("Creating SingleCellExperiment...")
+    # sce <- SingleCellExperiment(assays=list(MzR=as(res, "dgCMatrix")))
+    sce <- SingleCellExperiment(assays=list(MzR=res))
+
+    # this should probably move into parseColnames
+    if (coldat) {
+      cdat$condition <- factor(cdat$condition) # TC or Exp
+      ncontrols <- table(cdat$condition)["TC"]
+      if (verbose) message("Found ", ncontrols, " controls.")
+      nexperimental <- table(cdat$condition)["Exp"]
+      if (verbose) message("Found ", nexperimental, " experimental samples.")
+      others <- setdiff(levels(cdat$condition), c("TC", "Exp"))
+      nothers <- length(others)
+      if (verbose & nothers > 0) {
+        message("Found ",nothers," other conditions:")
+        for (i in others) message("  ", i)
+      }
+      cdat$experiment <- factor(cdat$experiment)
+      if (verbose & nlevels(cdat$experiment) > 1) {
+        message("Found ", nlevels(cdat$experiment), " experiments:")
+        for (i in levels(cdat$experiment)) message("  ", i)
+      }
+      cdat$method <- factor(cdat$method)
+      if (verbose & nlevels(cdat$method) > 1) {
+        message("Found ", nlevels(cdat$method), " methods:")
+        for (i in levels(cdat$method)) message("  ", i)
+      }
+      cdat$control <- cdat$condition == "TC"
+      cdat$batch <- NA
+      cdat[, "batch"] <- 
+        paste0(as.character(cdat$experiment), ":", 
+               as.character(cdat$method),
+               ifelse(grepl("^B", cdat$sample), 
+                      paste0(":", cdat$sample), ""))
+      cdat$batch <- factor(cdat$batch)
+      if (verbose & nlevels(cdat$batch) > 0) {
+        message("Found ", nlevels(cdat$batch), " batches:")
+        for (i in levels(cdat$batch)) message("  ", i)
+      }
+      cdat$replicate <- as.integer(cdat$replicate)
+      colData(sce) <- DataFrame(cdat)
+    }
+
     if (exists("rowdat")) rowData(sce) <- rowdat
     mainExpName(sce) <- "MzR"
-    return(sce)
     if (verbose) message("...done.")
+    return(sce)
+
   } else { 
+    
+    if (verbose) message("Returning the raw data matrix.")
+    if (coldat) attr(res, "rowData") <- rowdat
     if (coldat) attr(res, "colData") <- cdat
     return(res)
+
   }
 
 }
