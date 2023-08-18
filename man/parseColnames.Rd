@@ -12,8 +12,6 @@ parseColnames(cn, sep1 = "_", sep2 = "-")
 \item{sep1}{separator 1 ("_")}
 
 \item{sep2}{separator 2 ("-")}
-
-\item{drop1}{drop the first column? (TRUE)}
 }
 \value{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{ a data.frame (coercible to DataFrame for SCE objects)
@@ -22,7 +20,7 @@ parseColnames(cn, sep1 = "_", sep2 = "-")
 \description{
 e.g. 'Exp_D9-8W-LN_2_C18neg-MC00138-S028'
 splitting on '_':
-token 1 is condition
+token 1 is condition (Exp, TC, or CAL)
 token 2 is experimental factors, further split by '-':
 factor1:'D9'
 factor2:'8W'

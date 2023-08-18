@@ -4,20 +4,38 @@
 \alias{readUntargeted}
 \title{read untargeted metabolomics data into R and churn out an SCE}
 \usage{
-readUntargeted(x, coldat = TRUE, out = c("SCE", "raw"))
+readUntargeted(x, coldat = TRUE, out = c("SCE", "raw"), verbose = FALSE)
 }
 \arguments{
 \item{x}{the CSV file of the output}
 
-\item{coldat}{extract column data from the column names? (FALSE)}
+\item{coldat}{extract column data from the column names? (TRUE)}
 
-\item{out}{format of the output object (default is "raw"; alt "SCE")}
+\item{out}{format of the output object (default is "SCE"; alt is "raw")}
+
+\item{verbose}{be verbose? (FALSE)}
 }
 \description{
 Not to be confused with readMzR
 }
 \details{
 To a first approximation, the function just reads in and parses colnames
+
+TC (technical controls) have various subtypes:
+TC_Blank  (solvent blank)
+TC_PB     (process blank)
+TC_QC     (QC within batch -- pooled sample -- linearity/shift)
+
+TC_\emph{\emph{conditioning can be dropped altogether
+TC}}_restart can be dropped altogether
+
+The remaining TCs are useful for normalization (Blank) and linearization
+(QC) -- linearization via GAMM is sensible -- ZachM problem -- mgcv
+
+It is important to block on Batch (B\link{1234}) and Experiment (MC000XYZ)
+since the QC controls are within batch linearizers for run order, while
+TC_PB is a true blank (noise), and TC_Blank is a solvent blank (carrier)
+In terms of TC_QC, it is critical to model the dropoff per feature well.
 }
 \examples{
 
@@ -30,8 +48,8 @@ if (FALSE) {
   fl <- "MC00295_HILIC_A_All_PoolSize.csv"
   HILAC <- readUntargeted(fl)
   HILAC <- HILAC[-which(rownames(HILAC) == "group"), ] 
-  HILAC <- Matrix(log1p(HILAC)) # unstandardized 
-  nmf_fit <- singlet::ard_nmf(HILAC)
+  HILAC <- Matrix(log1p(HILAC)) # unstandardized; fixme
+  nmf_fit <- RcppML::nmf(HILAC, k=5) # need ard_nmf
 
 }
 
