@@ -76,7 +76,7 @@ readUntargeted <- function(x, coldat=TRUE, out=c("SCE","raw"), verbose=FALSE) {
 
   if (out == "SCE") {
     if (verbose) message("Constructing SingleCellExperiment...", append=FALSE)
-    sce <- SingleCellExperiment(assays=list(MzR=dgCMatrix(res)))
+    sce <- SingleCellExperiment(assays=list(MzR=as(res, "dgCMatrix")))
     if (coldat) colData(sce) <- DataFrame(cdat)
     if (exists("rowdat")) rowData(sce) <- rowdat
     mainExpName(sce) <- "MzR"
