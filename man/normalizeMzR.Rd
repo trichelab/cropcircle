@@ -4,11 +4,26 @@
 \alias{normalizeMzR}
 \title{normalize metabolomics data with 'Exp', 'TC', and perhaps 'CAL' columns}
 \usage{
-normalizeMzR(sce)
+normalizeMzR(sce, norm = "norm", batch = "batch", how = c("logFC"))
 }
 \arguments{
 \item{sce}{a SingleCellExperiment with !is.null(assay(sce, "MzR"))}
+
+\item{norm}{name of the column indicating normalization controls ("norm")}
+
+\item{batch}{name of the column indicating batch (for matching; "batch")}
+
+\item{how}{how to normalize (default: "logFC", see Details)}
+}
+\value{
+\if{html}{\out{<div class="sourceCode">}}\preformatted{   a SingleCellExperiment normalized per batch against controls
+}\if{html}{\out{</div>}}
 }
 \description{
 assay(sce, "normMzR") <- log1p((Exp|CAL) / TC) for all features in MzR
+}
+\details{
+logFC normalization is log((1 + (X/sigma_norm))/(1 + (mu_norm/sigma_norm))).
+sigma_norm is padded by 1 to avoid division by zero (it shrinks, a bit).
+Be careful not to use loess controls as if they were blanks!
 }
