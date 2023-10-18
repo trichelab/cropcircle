@@ -24,6 +24,6 @@ Suggests:
     covr,
     iSEE,
     testthat
-Encoding: "UTF-8"
+Encoding: UTF-8
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
