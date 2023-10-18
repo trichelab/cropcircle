@@ -45,8 +45,8 @@
 #'         "Exp_GFP-16w-NC_4_T3pos-MC00138-S053",
 #'         "TC_QC_3_T3pos-MC00298-B1")
 #'         
-#' parseColnames(cn, fullSample=FALSE)
-#' parseColnames(cn, fullSample=TRUE) # default
+#' parseColnames(cn, full=FALSE)
+#' parseColnames(cn, full=TRUE) # default
 #'
 #' @export
 #'
@@ -67,7 +67,7 @@ parseColnames <- function(cn, sep1="_", sep2="-", full=TRUE, expCon="Exp"){
   rownames(cdat) <- cn
 
   # rename better
-  if (fullSample) { 
+  if (full == TRUE) { 
     
     cdat$originalName <- rownames(cdat)
     stopifnot("experiment" %in% colnames(cdat))

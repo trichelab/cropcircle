@@ -60,7 +60,7 @@ cn <- c("Exp_D9-8W-LN_1_C18neg-MC00138-S027",
         "Exp_GFP-16w-NC_4_T3pos-MC00138-S053",
         "TC_QC_3_T3pos-MC00298-B1")
         
-parseColnames(cn, fullSample=FALSE)
-parseColnames(cn, fullSample=TRUE) # default
+parseColnames(cn, full=FALSE)
+parseColnames(cn, full=TRUE) # default
 
 }
