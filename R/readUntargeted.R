@@ -108,11 +108,10 @@ readUntargeted <- function(x, coldat=TRUE, out=c("SCE","raw"), verbose=FALSE) {
       }
       cdat$control <- cdat$condition == "TC"
       cdat$batch <- NA
-      cdat[, "batch"] <- 
-        paste0(as.character(cdat$experiment), ":", 
-               as.character(cdat$method),
-               ifelse(grepl("^B", cdat$sample), 
-                      paste0(":", cdat$sample), ""))
+      cdat[, "batch"] <- paste0(as.character(cdat$experiment), ":", 
+                                as.character(cdat$method),
+                                ifelse(grepl("^B", cdat$sample), 
+                                       paste0(":", cdat$sample), ""))
       cdat$batch <- factor(cdat$batch)
       if (verbose & nlevels(cdat$batch) > 0) {
         message("Found ", nlevels(cdat$batch), " batches:")
@@ -122,7 +121,12 @@ readUntargeted <- function(x, coldat=TRUE, out=c("SCE","raw"), verbose=FALSE) {
       colData(sce) <- DataFrame(cdat)
     }
 
-    if (exists("rowdat")) rowData(sce) <- rowdat
+    if (exists("rowdat")) {
+      names(rowdat) <- sub("RT_min", "rtime", names(rowdat)) # for xcms
+      # otherwise have to specify rtime="RT_min" in groupFeatures(sce, ...) 
+      # e.g. groupFeatures(merged, param=SimilarRtimeParam(10), rtime="RT_min")
+      rowData(sce) <- rowdat
+    }
     mainExpName(sce) <- "MzR"
     if (verbose) message("...done.")
     return(sce)
