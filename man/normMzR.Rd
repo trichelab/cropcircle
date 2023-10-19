@@ -2,7 +2,7 @@
 % Please edit documentation in R/normMzR.R
 \name{normMzR}
 \alias{normMzR}
-\title{accessor for assays(x, 'normMzR')}
+\title{accessor for assay(x, 'normMzR')}
 \usage{
 normMzR(x)
 }
@@ -10,9 +10,9 @@ normMzR(x)
 \item{x}{the object}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{   assays(sce, "normMzR") 
+\if{html}{\out{<div class="sourceCode">}}\preformatted{   assay(x, "normMzR") 
 }\if{html}{\out{</div>}}
 }
 \description{
-accessor for assays(x, 'normMzR')
+accessor for assay(x, 'normMzR')
 }

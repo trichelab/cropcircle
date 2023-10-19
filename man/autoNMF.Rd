@@ -4,17 +4,26 @@
 \alias{autoNMF}
 \title{take an SCE of metabolomics data with 'MzR' in the assays, norm, and NMF it}
 \usage{
-autoNMF(sce, k, ...)
+autoNMF(x, k = NULL, asy = "normMzR", ...)
 }
 \arguments{
-\item{sce}{a SingleCellExperiment of mass spec data}
+\item{x}{a SingleCellExperiment (or similar) of mass spec data}
 
-\item{k}{target rank for NMF decomposition}
+\item{k}{target rank for NMF decomposition (default: use ard)}
 
-\item{...}{additional arguments passed to RcppML::nmf}
+\item{asy}{name of the assay to use (default: normMzR)}
+
+\item{...}{additional arguments passed to RcppML::nmf or singlet::ard_nmf}
+}
+\value{
+\if{html}{\out{<div class="sourceCode">}}\preformatted{   an RcppML::nmf object
+}\if{html}{\out{</div>}}
 }
 \description{
 This function assumes that TC and CAL samples have been used to normalize,
 but if they have not (if there is no normMzR in assayNames(sce)), it will
 run normalizeMzR() and the latter will complain if no TCs/CALs are present
+}
+\details{
+FIXME: drop the dependency on singlet!
 }

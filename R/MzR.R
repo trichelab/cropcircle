@@ -2,10 +2,10 @@
 #'
 #' @param   x     the object
 #' 
-#' @return        assays(sce, "MzR") 
+#' @return        assay(sce, "MzR") 
 #'
 #' @export
 #'
 MzR <- function(x) {
-  assays(x, "MzR")
+  assay(x, "MzR")
 }

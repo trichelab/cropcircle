@@ -1,11 +1,11 @@
-#' accessor for assays(x, 'normMzR')
+#' accessor for assay(x, 'normMzR')
 #'
 #' @param   x     the object
 #' 
-#' @return        assays(sce, "normMzR") 
+#' @return        assay(x, "normMzR") 
 #'
 #' @export
 #'
 normMzR <- function(x) {
-  assays(x, "normMzR")
+  assay(x, "normMzR")
 }

@@ -10,7 +10,7 @@ MzR(x)
 \item{x}{the object}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{   assays(sce, "MzR") 
+\if{html}{\out{<div class="sourceCode">}}\preformatted{   assay(sce, "MzR") 
 }\if{html}{\out{</div>}}
 }
 \description{

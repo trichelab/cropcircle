@@ -27,8 +27,6 @@ iSEE_NMF <- function(sce) {
     message("BiocManager::install('iSEE')")
     stop("Cannot launch without `iSEE`.")
   } else { 
-    message("Need to settle on a canonical 'first grouping' and autoNMF")
-    browser()
     iSEE(sce,
          initial=list(UMAP=new("ReducedDimensionPlot",
                                ColorByColumnData = "ExperimentalGroup",
@@ -36,15 +34,14 @@ iSEE_NMF <- function(sce) {
                                Type = "UMAP"),
                       Feature=new("RowDataTable"),
                       Abundance=new("FeatureAssayPlot", 
-                                    Assay = "MzR", 
+                                    Assay = "normMzR", 
                                     XAxis = "Column data", 
-                                    XAxisColumnData = "ExperimentalGroup", 
+                                    XAxisColumnData = "Genotype", 
                                     YAxisFeatureSource = "Feature", 
                                     YAxisFeatureDynamicSource = TRUE, 
-                                    ColorByColumnData = "ExperimentalGroup", 
+                                    ColorByColumnData = "Genotype", 
                                     ColorBy = "Column data") 
                       )
           )
   }
-
 }
